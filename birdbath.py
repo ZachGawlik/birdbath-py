@@ -3,7 +3,7 @@ import textwrap
 import webbrowser
 import tweepy
 
-auth = tweepy.OAuthHandler(config.consumer_key, config.consumer_secret) 
+auth = tweepy.OAuthHandler(config.consumer_key, config.consumer_secret)
 
 print('BIRDBATH: Clean your twitter history!')
 
@@ -21,7 +21,6 @@ auth.set_access_token(*token)
 api = tweepy.API(auth)
 print('Logged in as: ' + api.me().screen_name)
 
-personal_tweets = api.user_timeline()
 for tweet in tweepy.Cursor(api.user_timeline).items():
     print(textwrap.fill(tweet.text))
     print('({},{})'.format(tweet.favorite_count, tweet.retweet_count))
@@ -30,7 +29,7 @@ for tweet in tweepy.Cursor(api.user_timeline).items():
         try:
             api.destroy_status(tweet.id)
             print('DELETED: ', tweet.id)
-        except:
+        except Exception as err:
             print('Failed to delete: ', tweet.id)
+            print(err)
     print(' -' * 30)
-
